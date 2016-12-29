@@ -9,7 +9,7 @@
 
 ## Synopsis
 
-### S3 dbConfig.json
+### MYSQL dbConfig.json
 
 ```js
 {
@@ -181,7 +181,7 @@ exports.updateUser = function(conn, user) {
 };
 ```
 
-### Sign In, no Transaction management
+### Connection Management (only select, no changing in data)
 ```js
 
 var mysql = require('mysql');
@@ -223,8 +223,23 @@ var signIn = function(usr) {
 
 ```
 
-### Sign In, Automatic Transaction management
+### Automatic Transaction management (multi insert/update/delete)
 ```js
+
+var mysql = require('mysql');
+
+var dbconfig = require('../dbconfig');
+
+var db = require('ying-mysqldb');
+
+var dbserv = require('../DBService');
+
+var pool = mysql.createPool({
+	host: dbconfig.master.host,
+	user: dbconfig.master.user,
+	password: dbconfig.master.password,
+	database: dbconfig.master.database
+});
 
 var saveUserInfo = function(sec_userID, userInfo) {
 	debug('start saveUserInfo. userInfo:%o', userInfo);
