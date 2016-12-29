@@ -1,6 +1,6 @@
 {
   "name": "ying-mysqldb",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,6 @@
   "dependencies": {
     "debug": "^2.3.2"
   },
-  "author": "jaynsw@gmail.com",
+  "author": "jaynsw@veryveryhard.com",
   "license": "ISC"
 }
