@@ -186,7 +186,7 @@ exports.updateUser = function(conn, user) {
 
 var mysql = require('mysql');
 
-var dbconfig = require('../dbconfig');
+var dbconfig = require('./dbconfig');
 
 var db = require('ying-mysqldb');
 
