@@ -15,15 +15,15 @@
 {
 	"master":{
 		"host": "localhost",
-		"user": "jying",
+		"user": "user1",
 		"password": "1122sz",
-		"database": "jying"
+		"database": "user"
 	},
 	"slave":{
 		"host": "localhost",
-		"user": "juying",
-		"password": "qscesz",
-		"database": "juying"
+		"user": "user1",
+		"password": "1122sz",
+		"database": "user"
 	}
 }
 ```
