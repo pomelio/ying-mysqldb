@@ -84,7 +84,7 @@ function sql(pool, callback) {
 				reject(err);
 			});
 
-		},  err => {
+		}, err => {
 			debug('---reject---%o', err);
 			reject(err);
 		});
