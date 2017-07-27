@@ -2,6 +2,13 @@
 
 var debug = require('debug')('mysqldb');
 
+/**
+ * Start a database transcation and return a promise
+ * which resolve into a database connection in the transaction
+ * or reject with error.
+ * @param {mysql.pool} pool - mysql databse connection pool object.
+ */
+
 function beginTransaction(pool) {
 	return new Promise((resolve, reject) => {
 		pool.getConnection((err, conn) => {
@@ -22,6 +29,12 @@ function beginTransaction(pool) {
 	});
 }
 
+/**
+ * Return a promise which resolve into a database
+ * connection or reject with an error.
+ * select afterwards.
+ * @param {mysql.pool} pool - mysql database connection pool
+ */
 function beginQuery(pool) {
 	return new Promise((resolve, reject) => {
 		pool.getConnection((err, conn) => {
@@ -35,6 +48,17 @@ function beginQuery(pool) {
 	});
 }
 
+/**
+ * Commit database changes made from callback function and 
+ * return a promise which is the promise return from the callback
+ * function or rollback all the changes and reject with an 
+ * error. All the database changes 
+ * should be put inside the callback function sharing same connection object
+ *  and return a promise object.
+ * @param {myql.pool} pool - mysql database connection pool
+ * @param {function(conn: mysql.connection) Promise => {}} callback - callback function which includes all the database changes in a transaction. 
+ * 
+ */
 function tx(pool, callback) {
 	return new Promise((resolve, reject) => {
 		beginTransaction(pool).then(conn => {
@@ -68,6 +92,18 @@ function tx(pool, callback) {
 	});
 }
 
+
+/**
+ * return a promise which is the promise return from the callback
+ * function or reject with an 
+ * error. All the database select statements 
+ * should be put inside the callback function shareing with same connection
+ * object and return a promise
+ * object.
+ * @param {myql.pool} pool - mysql database connection pool
+ * @param {function(conn: mysql.connection) Promise => {}} callback - callback function which includes all the database changes in a transaction. 
+ * 
+ */
 function sql(pool, callback) {
 	return new Promise((resolve, reject) => {
 		beginQuery(pool).then(conn => {
@@ -91,6 +127,12 @@ function sql(pool, callback) {
 	});
 }
 
+
+/**
+ * return a promise which resolves to null or first record from a select statement
+ * @param {mysql.connection} conn - the database connection
+ * @param {squel.ql} ql - select statement 
+ */
 function get(conn, ql) {
 	debug('start get');
 	ql.limit(1);
@@ -115,6 +157,11 @@ function get(conn, ql) {
 
 }
 
+/**
+ * return an promise which resolve to an empty array or records from a select statement
+ * @param {mysql.connection} conn - the database connection
+ * @param {squel.ql} ql - select statement 
+ */
 function list(conn, ql) {
 	debug('start list');
 	return new Promise((resolve, reject) => {
@@ -133,6 +180,11 @@ function list(conn, ql) {
 	});
 }
 
+/**
+ * return a promise which resolve from the result of executing a insert/update/delete statement
+ * @param {mysql.connection} conn - the database connection
+ * @param {squel.ql} ql - select statement 
+ */
 function update(conn, ql) {
 	debug('start update');
 	return new Promise((resolve, reject) => {
@@ -150,6 +202,11 @@ function update(conn, ql) {
 	});
 }
 
+/**
+ * return a promise which resolve from the result of executing a insert/update/delete statement
+ * @param {mysql.connection} conn - the database connection
+ * @param {string} ql - select statement string
+ */
 function run(conn, sql) {
 	debug('start update');
 	return new Promise((resolve, reject) => {
@@ -166,7 +223,11 @@ function run(conn, sql) {
 	});
 }
 
-
+/**
+ * return a promise which resolve from the result rows of executing a select statement
+ * @param {mysql.connection} conn - the database connection
+ * @param {string} ql - select statement string
+ */
 function runList(conn, sql) {
 	debug('start list');
 	return new Promise((resolve, reject) => {
